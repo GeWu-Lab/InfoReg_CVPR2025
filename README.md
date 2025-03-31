@@ -2,7 +2,7 @@
 This is the official PyTorch implementation of "Adaptive Unimodal Regulation for Balanced Multimodal Information Acquisition".
 
 ## Authors:
-Chengxiang Huang*, [Yake Wei](https://echo0409.github.io/)*, Zequn Yang and [Di Hu](https://dtaoo.github.io/index.html)
+Chengxiang Huang†, [Yake Wei](https://echo0409.github.io/)†, Zequn Yang and [Di Hu](https://dtaoo.github.io/index.html)
 
 ## Abstract:
 Sensory training during the early ages is vital for human development. Inspired by this cognitive phenomenon, we observe that the early training stage is also important for the multimodal learning process, where dataset information is rapidly acquired. We refer to this stage as the prime learning window. However, based on our observation, this prime learning window in multimodal learning is often dominated by information-sufficient modalities, which in turn suppresses the information acquisition of information-insufficient modalities.
