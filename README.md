@@ -13,7 +13,7 @@ For more details of our paper, please refer to  our [CVPR 2025 paper](https://ar
 ## Imbalanced information acquisition in multimodal learning during the prime learning window
 
 <div align="center">    
-    <img src="picture/prime_learning_window.jpg" style="width: 70%" />
+    <img src="picture/prime_learning_window.jpg" style="width: 60%" />
 </div>
 
 As shown in Figure 1(a), the green curve, representing the overall multimodal network, demonstrates a rapid increase in information amount during the prime learning window. For audio modality, its overall trend closely aligns with the overall multimodal model, and shows a high information acquisition amount during the prime learning window. These findings align with our expectation that modality information could be acquired effectively within the prime learning window.
