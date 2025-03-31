@@ -2,7 +2,7 @@
 This is the official PyTorch implementation of "Adaptive Unimodal Regulation for Balanced Multimodal Information Acquisition".
 
 ## Paper title:
-**Adaptive Unimodal Regulation for Balanced Multimodal Information Acquisition** [**[arxiv](https://arxiv.org/abs/2503.18595)**]
+**Adaptive Unimodal Regulation for Balanced Multimodal Information Acquisition** [**[arXiv](https://arxiv.org/abs/2503.18595)**]
 
 ## Authors:
 **Chengxiang Huang†**, **[Yake Wei](https://echo0409.github.io/)†**, **Zequn Yang** and **[Di Hu](https://dtaoo.github.io/index.html)**
