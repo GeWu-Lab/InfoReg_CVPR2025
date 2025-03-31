@@ -1,8 +1,12 @@
 # Code of InfoReg
 This is the official PyTorch implementation of "Adaptive Unimodal Regulation for Balanced Multimodal Information Acquisition".
 
+## Paper title:
+**Adaptive Unimodal Regulation for Balanced Multimodal Information Acquisition** [**[arxiv](https://arxiv.org/abs/2503.18595)**]
+
 ## Authors:
-Chengxiang Huang†, [Yake Wei](https://echo0409.github.io/)†, Zequn Yang and [Di Hu](https://dtaoo.github.io/index.html)
+**Chengxiang Huang†**, **[Yake Wei](https://echo0409.github.io/)†**, **Zequn Yang** and **[Di Hu](https://dtaoo.github.io/index.html)**
+
 
 ## Abstract:
 Sensory training during the early ages is vital for human development. Inspired by this cognitive phenomenon, we observe that the early training stage is also important for the multimodal learning process, where dataset information is rapidly acquired. We refer to this stage as the prime learning window. However, based on our observation, this prime learning window in multimodal learning is often dominated by information-sufficient modalities, which in turn suppresses the information acquisition of information-insufficient modalities.
@@ -41,6 +45,18 @@ Data processing follows [OGM](https://github.com/GeWu-Lab/OGM-GE_CVPR2022).
 After data processing, you can simply run the code by:
 <pre><code>
 python main.py
+</code></pre>
+
+## Citation
+If you find this work useful, please consider citing it.
+
+<pre><code>
+@article{huang2025adaptive,
+  title={Adaptive Unimodal Regulation for Balanced Multimodal Information Acquisition},
+  author={Huang, Chengxiang and Wei, Yake and Yang, Zequn and Hu, Di},
+  journal={arXiv preprint arXiv:2503.18595},
+  year={2025}
+}
 </code></pre>
 
 
