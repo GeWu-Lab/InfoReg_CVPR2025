@@ -80,6 +80,107 @@ class AVClassifier(nn.Module):
         return a,v,out_audio,out_video,out
 
 
+class TriModalClassifier(nn.Module):
+    def __init__(self, args):
+        super(TriModalClassifier, self).__init__()
+
+        self.dataset = args.dataset
+        if args.dataset == 'MOSEI' or args.dataset == 'MOSI':
+            n_classes = getattr(args, 'n_classes', 3)
+            text_dim = getattr(args, 'text_dim', 300)
+            audio_dim = getattr(args, 'audio_dim', 74)
+            visual_dim = getattr(args, 'visual_dim', 35)
+        else:
+            n_classes = getattr(args, 'n_classes', 3)
+            text_dim = getattr(args, 'text_dim', 300)
+            audio_dim = getattr(args, 'audio_dim', 74)
+            visual_dim = getattr(args, 'visual_dim', 35)
+
+        self.n_classes = n_classes
+        self.hidden_dim = getattr(args, 'hidden_dim', 512)
+        hidden_dim = self.hidden_dim
+
+        self.text_net = nn.Sequential(
+            nn.Linear(text_dim, hidden_dim),
+            nn.ReLU(),
+            nn.Dropout(0.3),
+            nn.Linear(hidden_dim, hidden_dim),
+            nn.ReLU(),
+        )
+        self.audio_net = nn.Sequential(
+            nn.Linear(audio_dim, hidden_dim),
+            nn.ReLU(),
+            nn.Dropout(0.3),
+            nn.Linear(hidden_dim, hidden_dim),
+            nn.ReLU(),
+        )
+        self.visual_net = nn.Sequential(
+            nn.Linear(visual_dim, hidden_dim),
+            nn.ReLU(),
+            nn.Dropout(0.3),
+            nn.Linear(hidden_dim, hidden_dim),
+            nn.ReLU(),
+        )
+
+        # Unimodal Heads (单模态分类头)
+        self.head_text = nn.Linear(hidden_dim, n_classes)
+        self.head_audio = nn.Linear(hidden_dim, n_classes)
+        self.head_visual = nn.Linear(hidden_dim, n_classes)
+        
+        # Fusion Head (多模态融合分类头)
+        self.fusion_head = nn.Linear(hidden_dim * 3, n_classes)
+        
+        # 用于 Proximal 正则化的标志
+        self.usegate = False
+
+    def forward(self, text, audio, visual):
+        """
+        Forward pass
+        
+        Args:
+            text: [B, T, D_text] 或 [B, D_text] 文本特征
+            audio: [B, T, D_audio] 或 [B, D_audio] 音频特征
+            visual: [B, T, D_visual] 或 [B, D_visual] 视觉特征
+        
+        Returns:
+            t_feat: [B, hidden_dim] 文本特征
+            a_feat: [B, hidden_dim] 音频特征
+            v_feat: [B, hidden_dim] 视觉特征
+            out_t: [B, n_classes] 文本单模态输出
+            out_a: [B, n_classes] 音频单模态输出
+            out_v: [B, n_classes] 视觉单模态输出
+            out_fusion: [B, n_classes] 融合输出
+        """
+        # 处理输入维度，如果是序列 [B, T, D] 则取均值池化
+        if text.dim() == 3: 
+            text = text.mean(dim=1)
+        if audio.dim() == 3: 
+            audio = audio.mean(dim=1)
+        if visual.dim() == 3: 
+            visual = visual.mean(dim=1)
+
+        # 提取特征
+        t_feat = self.text_net(text)
+        a_feat = self.audio_net(audio)
+        v_feat = self.visual_net(visual)
+
+        # 单模态输出
+        out_t = self.head_text(t_feat)
+        out_a = self.head_audio(a_feat)
+        out_v = self.head_visual(v_feat)
+
+        # 融合输出
+        combined = torch.cat((t_feat, a_feat, v_feat), dim=1)
+        out_fusion = self.fusion_head(combined)
+
+        return t_feat, a_feat, v_feat, out_t, out_a, out_v, out_fusion
+    
+    def get_fusion_output_from_features(self, t_feat, a_feat, v_feat):
+        """从已有特征计算融合输出 (用于分析)"""
+        combined = torch.cat((t_feat, a_feat, v_feat), dim=1)
+        return self.fusion_head(combined)
+
+
 # class AVClassifier_transformer(nn.Module):
 #     def __init__(self, args):
 #         super(AVClassifier_transformer, self).__init__()
